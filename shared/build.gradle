@@ -1,0 +1,17 @@
+plugins {
+    id 'com.android.library'
+}
+android {
+    namespace 'com.example.topquiz.shared'
+    compileSdkVersion 35
+
+    defaultConfig {
+        minSdkVersion 28
+        targetSdkVersion 35
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+}
+dependencies {
+    implementation libs.media
+}
