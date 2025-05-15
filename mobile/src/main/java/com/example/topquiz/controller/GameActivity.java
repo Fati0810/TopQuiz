@@ -30,7 +30,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button mButtonDeux;
     private Button mButtonTrois;
     private Button mButtonQuatre;
-    private final QuestionBank mQuestionBank = generateQuestions();
+    private QuestionBank mQuestionBank = generateQuestions();
     private int mRemainingQuestionCount;
     private int mScore;
     private Question mCurrentQuestion;
@@ -38,6 +38,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean mEnableTouchEvents;
     public static final String BUNDLE_STATE_SCORE = "BUNDLE_STATE_SCORE";
     public static final String BUNDLE_STATE_QUESTION = "BUNDLE_STATE_QUESTION";
+    public static final String BUNDLE_STATE_QUESTIONBANK = "questionBank";
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -50,6 +52,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         outState.putInt(BUNDLE_STATE_SCORE, mScore);
         outState.putInt(BUNDLE_STATE_QUESTION, mRemainingQuestionCount);
+        outState.putParcelable(BUNDLE_STATE_QUESTIONBANK, mQuestionBank);
     }
 
     @Override
@@ -79,20 +82,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mButtonTrois.setOnClickListener(this);
         mButtonQuatre.setOnClickListener(this);
 
-        displayQuestion(mQuestionBank.getCurrentQuestion());
-
         mEnableTouchEvents = true;
-
-        mRemainingQuestionCount = 2;
-        mScore = 0;
 
         if(savedInstanceState != null){
             mRemainingQuestionCount = savedInstanceState.getInt(BUNDLE_STATE_QUESTION);
             mScore = savedInstanceState.getInt(BUNDLE_STATE_SCORE);
+            mQuestionBank = savedInstanceState.getParcelable(BUNDLE_STATE_QUESTIONBANK);
         }else{
             mRemainingQuestionCount = 2;
             mScore = 0;
+            mQuestionBank = generateQuestions();
         }
+
+        displayQuestion(mQuestionBank.getCurrentQuestion());
     }
 
     private void displayQuestion(final Question question) {

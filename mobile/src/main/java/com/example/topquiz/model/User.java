@@ -3,7 +3,7 @@ package com.example.topquiz.model;
 public class User {
     private String mFirstName;
 
-    public String getFirstName() {
+    public String getFirstName() i
         return mFirstName;
     }
 

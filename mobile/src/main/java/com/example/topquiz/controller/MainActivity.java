@@ -31,27 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private static final String SHARED_PREF_USER_INFO_NAME = "SHARED_PREF_USER_INFO_NAME";
     private static final String SHARED_PREF_USER_INFO_SCORE = "SHARED_PREF_USER_INFO_SCORE";
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == GAME_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            int score = data.getIntExtra(GameActivity.BUNDLE_EXTRA_SCORE, 0);
-
-            // Sauvegarde du score dans les SharedPreferences
-            SharedPreferences preferences = getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE);
-            preferences.edit()
-                    .putInt(SHARED_PREF_USER_INFO_SCORE, score)
-                    .apply();
-
-            // Récupération du nom de l'utilisateur et mise à jour du message d'accueil avec le score
-            String userName = preferences.getString(SHARED_PREF_USER_INFO_NAME, "Player");
-            mGreetingTextView.setText("Well done, " + userName + "! Your final score is: " + score);
-        }
-
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,18 +89,43 @@ public class MainActivity extends AppCompatActivity {
         mPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gameActivityIntent = new Intent(MainActivity.this, GameActivity.class);
-                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
                 mUser.setFirstName(mNameEditText.getText().toString());
 
                 preferences.edit()
                         .putString(SHARED_PREF_USER_INFO_NAME, mUser.getFirstName())
                         .apply();
+
+                Intent gameActivityIntent = new Intent(MainActivity.this, GameActivity.class);
+                startActivityForResult(gameActivityIntent, GAME_ACTIVITY_REQUEST_CODE);
             }
         });
 
+
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GAME_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            int score = data.getIntExtra(GameActivity.BUNDLE_EXTRA_SCORE, 0);
+
+            // Sauvegarde du score dans les SharedPreferences
+            SharedPreferences preferences = getSharedPreferences(SHARED_PREF_USER_INFO, MODE_PRIVATE);
+            preferences.edit()
+                    .putInt(SHARED_PREF_USER_INFO_SCORE, score)
+                    .apply();
+
+            // Récupération du nom de l'utilisateur et mise à jour du message d'accueil avec le score
+            String userName = preferences.getString(SHARED_PREF_USER_INFO_NAME, "Player");
+            mGreetingTextView.setText("Well done, " + userName + "! Your final score is: " + score);
+        }
+
     }
 }
+
+
 
 //  Probème : - le focus lorsque j'entre dans l'app a partir du telephone
 //  - Le texte ne change pas
