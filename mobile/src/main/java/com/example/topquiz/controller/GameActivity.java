@@ -1,5 +1,6 @@
 package com.example.topquiz.controller;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,25 +23,28 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.topquiz.R;
 import com.example.topquiz.model.Question;
 import com.example.topquiz.model.QuestionBank;
+import com.example.topquiz.model.User;
 
 import java.util.Arrays;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener {
+
     private TextView mQuestionTextView;
     private Button mButtonUn;
     private Button mButtonDeux;
     private Button mButtonTrois;
     private Button mButtonQuatre;
-    private QuestionBank mQuestionBank = generateQuestions();
+
+    private QuestionBank mQuestionBank;
+    private Question mCurrentQuestion;
     private int mRemainingQuestionCount;
     private int mScore;
-    private Question mCurrentQuestion;
-    public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
     private boolean mEnableTouchEvents;
+
+    public static final String BUNDLE_EXTRA_SCORE = "BUNDLE_EXTRA_SCORE";
     public static final String BUNDLE_STATE_SCORE = "BUNDLE_STATE_SCORE";
     public static final String BUNDLE_STATE_QUESTION = "BUNDLE_STATE_QUESTION";
     public static final String BUNDLE_STATE_QUESTIONBANK = "questionBank";
-
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -49,7 +54,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putInt(BUNDLE_STATE_SCORE, mScore);
         outState.putInt(BUNDLE_STATE_QUESTION, mRemainingQuestionCount);
         outState.putParcelable(BUNDLE_STATE_QUESTIONBANK, mQuestionBank);
@@ -65,6 +69,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game);
+
+        Intent intent = getIntent();
+        User mUser = intent.getParcelableExtra("user");
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -84,18 +92,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         mEnableTouchEvents = true;
 
-        if(savedInstanceState != null){
-            mRemainingQuestionCount = savedInstanceState.getInt(BUNDLE_STATE_QUESTION);
+        if (savedInstanceState != null) {
             mScore = savedInstanceState.getInt(BUNDLE_STATE_SCORE);
+            mRemainingQuestionCount = savedInstanceState.getInt(BUNDLE_STATE_QUESTION);
             mQuestionBank = savedInstanceState.getParcelable(BUNDLE_STATE_QUESTIONBANK);
-        }else{
-            mRemainingQuestionCount = 2;
+        } else {
             mScore = 0;
+            mRemainingQuestionCount = 3;
             mQuestionBank = generateQuestions();
         }
 
-        displayQuestion(mQuestionBank.getCurrentQuestion());
+        mCurrentQuestion = mQuestionBank.getCurrentQuestion();
+
+        if (mUser != null) {
+            String message = getString(R.string.welcome_user, mUser.getFirstName());
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        }
+
+        displayQuestion(mCurrentQuestion);
     }
+
 
     private void displayQuestion(final Question question) {
         mQuestionTextView.setText(question.getQuestion());
@@ -105,39 +121,42 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         mButtonQuatre.setText(question.getChoiceList().get(3));
     }
 
-    private QuestionBank generateQuestions(){
+    private QuestionBank generateQuestions() {
+        Context context = getApplicationContext();
+
         Question question1 = new Question(
-                "Who is the creator of Android?",
+                context.getString(R.string.question_android),
                 Arrays.asList(
-                        "Andy Rubin",
-                        "Steve Wozniak",
-                        "Jake Wharton",
-                        "Paul Smith"
+                        context.getString(R.string.answer_android_1),
+                        context.getString(R.string.answer_android_2),
+                        context.getString(R.string.answer_android_3),
+                        context.getString(R.string.answer_android_4)
                 ),
                 0
         );
 
         Question question2 = new Question(
-                "When did the first man land on the moon?",
+                context.getString(R.string.question_moon),
                 Arrays.asList(
-                        "1958",
-                        "1962",
-                        "1967",
-                        "1969"
+                        context.getString(R.string.answer_moon_1),
+                        context.getString(R.string.answer_moon_2),
+                        context.getString(R.string.answer_moon_3),
+                        context.getString(R.string.answer_moon_4)
                 ),
                 3
         );
 
         Question question3 = new Question(
-                "What is the house number of The Simpsons?",
+                context.getString(R.string.question_simpsons),
                 Arrays.asList(
-                        "42",
-                        "101",
-                        "666",
-                        "742"
+                        context.getString(R.string.answer_simpsons_1),
+                        context.getString(R.string.answer_simpsons_2),
+                        context.getString(R.string.answer_simpsons_3),
+                        context.getString(R.string.answer_simpsons_4)
                 ),
                 3
         );
+
         return new QuestionBank(Arrays.asList(question1, question2, question3));
     }
 
@@ -157,49 +176,49 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             throw new IllegalStateException("Unknown clicked view : " + view);
         }
 
-        if (index == mQuestionBank.getCurrentQuestion().getAnswerIndex()){
-            Toast.makeText(this,"Correct!",Toast.LENGTH_SHORT).show();
+        boolean isCorrect = index == mCurrentQuestion.getAnswerIndex();
+
+        if (isCorrect) {
+            view.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.quiz_button_correct));
+            Toast.makeText(this, getString(R.string.toast_correct), Toast.LENGTH_SHORT).show();
             mScore++;
-        }else{
-            Toast.makeText(this,"Incorrect!",Toast.LENGTH_SHORT).show();
+        } else {
+            view.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.quiz_button_wrong));
+            Toast.makeText(this, getString(R.string.toast_incorrect), Toast.LENGTH_SHORT).show();
         }
 
         mEnableTouchEvents = false;
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(() -> {
+            view.setBackgroundTintList(ContextCompat.getColorStateList(this, R.color.colorPrimary));
 
-            @Override
-            public void run() {
-                mRemainingQuestionCount--;
+            mRemainingQuestionCount--;
 
-                if (mRemainingQuestionCount > 0) {
-                    mCurrentQuestion = mQuestionBank.getNextQuestion();
-                    displayQuestion(mCurrentQuestion);
-                } else {
-                    endGame();
-                }
-                mEnableTouchEvents = true;
+            if (mRemainingQuestionCount > 0) {
+                mCurrentQuestion = mQuestionBank.getNextQuestion();
+                displayQuestion(mCurrentQuestion);
+            } else {
+                endGame();
             }
-        }, 2000); // LENGTH_SHORT is usually 2 second long
 
-
+            mEnableTouchEvents = true;
+        }, 1000);
     }
 
-    private void endGame(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle("Well done!")
-                .setMessage("Your score is " + mScore)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent();
-                        intent.putExtra(BUNDLE_EXTRA_SCORE, mScore);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
+
+    private void endGame() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dialog_well_done))
+                .setMessage(getString(R.string.dialog_score, mScore))
+                .setPositiveButton(getString(R.string.dialog_ok), (dialog, which) -> {
+                    Intent intent = new Intent();
+                    intent.putExtra(BUNDLE_EXTRA_SCORE, mScore);
+                    setResult(RESULT_OK, intent);
+                    finish();
                 })
                 .create()
                 .show();
     }
+
 }

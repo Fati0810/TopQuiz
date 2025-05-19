@@ -1,3 +1,41 @@
 <resources>
     <string name="app_name">TopQuiz</string>
+    <string name="welcome_text">Welcome to TopQuiz. What is your name?</string>
+    <string name="hint_name">Please type your name</string>
+    <string name="play_button">Let’s play</string>
+
+    <string name="question_android">Who is the creator of Android?</string>
+    <string name="answer_android_1">Andy Rubin</string>
+    <string name="answer_android_2">Steve Wozniak</string>
+    <string name="answer_android_3">Jake Wharton</string>
+    <string name="answer_android_4">Paul Smith</string>
+
+    <string name="question_moon">When did the first man land on the moon?</string>
+    <string name="answer_moon_1">1958</string>
+    <string name="answer_moon_2">1962</string>
+    <string name="answer_moon_3">1967</string>
+    <string name="answer_moon_4">1969</string>
+
+    <string name="question_simpsons">What is the house number of The Simpsons?</string>
+    <string name="answer_simpsons_1">42</string>
+    <string name="answer_simpsons_2">101</string>
+    <string name="answer_simpsons_3">666</string>
+    <string name="answer_simpsons_4">742</string>
+
+    <string name="toast_message">Welcome to TopQuiz!</string>
+    <string name="welcome_back_score">Welcome back, %1$s! Your last score was: %2$d</string>
+    <string name="welcome_back">Welcome back, %1$s!</string>
+    <string name="welcome_player">Welcome, player! Ready to play?</string>
+    <string name="final_score_message">Well done, %1$s! Your final score is: %2$d</string>
+
+    <string name="toast_correct">Correct!</string>
+    <string name="toast_incorrect">Incorrect!</string>
+
+    <string name="welcome_user">Welcome %1$s!</string>
+
+    <string name="dialog_well_done">Well done!</string>
+    <string name="dialog_score">Your score is %1$d</string>
+    <string name="dialog_ok">OK</string>
+
+
 </resources>
