@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:padding="8dp"
-        android:text="Bienvenue dans TopQuiz. Quel est votre prénom ?" />
+        android:text="@string/welcome_text" />
 
     <EditText
         android:id="@+id/edit_text"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="Please type your name"/>
+        android:hint="@string/hint_name"/>
 
     <Button
         android:id="@+id/button"
@@ -30,5 +30,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_margin="16dp"
-        android:text="let's play"/>
+        android:text="@string/play_button"/>
 </LinearLayout>

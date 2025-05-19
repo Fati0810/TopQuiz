@@ -31,6 +31,7 @@
         android:layout_margin="8dp"
         android:layout_weight="1"
         android:padding="16dp"
+        android:backgroundTint="@color/colorPrimary"
         android:textSize="20sp"
         tools:text="Answer1" />
 
@@ -42,6 +43,7 @@
         android:layout_margin="8dp"
         android:layout_weight="1"
         android:padding="16dp"
+        android:backgroundTint="@color/colorPrimary"
         android:textSize="20sp"
         tools:text="Answer2" />
 
@@ -53,6 +55,7 @@
         android:layout_margin="8dp"
         android:layout_weight="1"
         android:padding="16dp"
+        android:backgroundTint="@color/colorPrimary"
         android:textSize="20sp"
         tools:text="Answer3" />
 
@@ -64,6 +67,7 @@
         android:layout_margin="8dp"
         android:layout_weight="1"
         android:padding="16dp"
+        android:backgroundTint="@color/colorPrimary"
         android:textSize="20sp"
         tools:text="Answer4" />
 

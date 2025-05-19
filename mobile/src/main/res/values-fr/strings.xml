@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TopQuiz</string>
+    <string name="welcome_text">Bienvenue dans TopQuiz. Quel est votre prénom ?</string>
+    <string name="hint_name">Veuillez entrer votre prénom</string>
+    <string name="play_button">Jouer</string>
+
+    <string name="question_android">Qui est le créateur d\'Android ?</string>
+    <string name="answer_android_1">Andy Rubin</string>
+    <string name="answer_android_2">Steve Wozniak</string>
+    <string name="answer_android_3">Jake Wharton</string>
+    <string name="answer_android_4">Paul Smith</string>
+
+    <string name="question_moon">Quand le premier homme a-t-il marché sur la lune ?</string>
+    <string name="answer_moon_1">1958</string>
+    <string name="answer_moon_2">1962</string>
+    <string name="answer_moon_3">1967</string>
+    <string name="answer_moon_4">1969</string>
+
+    <string name="question_simpsons">Quel est le numéro de maison des Simpsons ?</string>
+    <string name="answer_simpsons_1">42</string>
+    <string name="answer_simpsons_2">101</string>
+    <string name="answer_simpsons_3">666</string>
+    <string name="answer_simpsons_4">742</string>
+
+    <string name="toast_message">Bienvenue dans TopQuiz !</string>
+    <string name="welcome_back_score">Bon retour, %1$s ! Votre dernier score était : %2$d</string>
+    <string name="welcome_back">Bon retour, %1$s !</string>
+    <string name="welcome_player">Bienvenue, joueur ! Prêt à jouer ?</string>
+    <string name="final_score_message">Bravo, %1$s ! Votre score final est : %2$d</string>
+
+    <string name="toast_correct">Correct!</string>
+    <string name="toast_incorrect">Incorrect!</string>
+
+    <string name="welcome_user">Bienvenue %1$s !</string>
+
+    <string name="dialog_well_done">Bravo !</string>
+    <string name="dialog_score">Votre score est %1$d</string>
+    <string name="dialog_ok">OK</string>
+
+</resources>
